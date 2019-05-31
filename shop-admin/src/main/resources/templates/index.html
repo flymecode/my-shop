@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>商城</title>
+    <meta th:replace="commons/header">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- header -->
+    <div th:replace="commons/nav"></div>
+    <!--  sidebar  -->
+    <div th:replace="commons/menu"></div>
+    <!--  content  -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                <small>控制面板</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li class="active">控制面板</li>
+            </ol>
+        </section>
+    </div>
+    <div th:replace="commons/copyright"></div>
+</div>
+<div th:replace="commons/footer"></div>
+</body>
+</html>
