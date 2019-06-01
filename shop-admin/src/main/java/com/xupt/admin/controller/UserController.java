@@ -32,8 +32,21 @@ public class UserController {
         return "user_list";
     }
 
-    @GetMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
+    @GetMapping("/{id}/edit")
+    public String getUser(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
+        User user = userService.getUser(id);
+        log.info(user.toString());
+        redirectAttributes.addFlashAttribute("user", user);
+        return "redirect:/user/form";
+    }
+    @ResponseBody
+    @GetMapping("/{id}/detail")
+    public User getUserDetail(@PathVariable("id") Integer id) {
+        User user = userService.getUser(id);
+        return user;
+    }
+    @PostMapping("/{id}/update")
+    public String updateUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         userService.updateUser(id);
         ResultMap success = ResultMap.success();
         redirectAttributes.addFlashAttribute("baseResult", success);

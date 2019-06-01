@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public  PageInfo<User>  listUsers(Integer page, Integer count) {
-        PageHelper.startPage(page, count);
+        PageHelper.offsetPage(page, count);
         List<User> users = userMapper.searchUsers();
         PageInfo<User> pages = PageInfo.of(users);
         if (users != null) {
@@ -51,5 +51,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(Integer id) {
 
+    }
+
+    @Override
+    public User getUser(Integer id) {
+        return userMapper.getUser(id);
     }
 }

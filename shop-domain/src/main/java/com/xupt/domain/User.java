@@ -2,18 +2,15 @@ package com.xupt.domain;
 
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * @author maxu
  * @date 2019/5/29
  */
 @Data
-public class User {
-    private Integer id;
+public class User extends BaseEntity{
+
     private String username;
     private String email;
     private String phone;
-    private Date created;
-    private Date updated;
+
 }

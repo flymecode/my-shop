@@ -41,7 +41,7 @@
                                 <a href="/user/form">
                                     <button type="button" class="btn btn-sm btn-default"><i class="fa fa-plus"></i>新增</button>
                                 </a>
-                                <button type="button" onclick="deleteMulti()" class="btn btn-sm btn-default"><i class="fa fa-trash"></i>删除</button>
+                                <button type="button" class="btn btn-sm btn-default" onclick="deleteMulti()"><i class="fa fa-trash"></i>删除</button>
                                 <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i>导入</button>
                                 <button type="button" class="btn btn-sm btn-default"><i class="fa fa-upload"></i>导出</button>
                             </div>
@@ -74,7 +74,7 @@
 
                                     <div class="row" style="padding-right: 15px">
                                         <div class="col-xs-12">
-                                            <button type="submit" class="btn btn-info pull-right"><i class="fa fa-search"></i>搜索</button>
+                                            <button type="button" class="btn btn-info pull-right" onclick="search()"><i class="fa fa-search"></i>搜索</button>
                                         </div>
                                     </div>
                                 </form>
@@ -122,94 +122,72 @@
         </div>
     </div>
 </div>
+<div th:replace="user_detail"></div>
 <div th:replace="commons/footer"></div>
 <script>
+    // ---------分页-------------
+    var dataTable = null;
     $(function () {
-        $('#user_list').DataTable({
-            'paging'      : true,
-            'lengthChange': false,
-            'processing'  : true,
-            'searching'   : false,
-            'ordering'    : false,
-            'info'        : true,
-            'autoWidth'   : false,
-            'serverSide'  : true,
-            'deferRender' : true,
-            'ajax'        : {
-                "url" : "/user/page"
+        var columns = [
+            {
+                'data': function (row, type, val, meta) {
+                    return '<input type="checkbox" class="minimal" id="' + row.id + '"/>'
+                }
             },
-            'columns' : [
-                {
-                    'data': function (row, type, val, meta) {
-                            return '<input type="checkbox" class="minimal" id="'+row.id+'"/>'
-                    }},
-                {'data':'id'},
-                {'data':'username'},
-                {'data':'phone'},
-                {'data':'email'},
-                {'data':'updated'},
-                {
-                    'data': function (row, type, val, meta) {
-                        return ' <button type="button" class="btn btn-sm btn-default"><i class="fa fa-search"></i>查看</button>' +
-                            ' <a th:href="@{/user/update/{id}(id=${user.id})}"><button type="button" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>编辑</button></a>' +
-                            ' <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</button>'
-
+            {'data': 'id'},
+            {'data': 'username'},
+            {'data': 'phone'},
+            {'data': 'email'},
+            {
+                'data': function (data) {
+                    var date = new Date(data.updated);
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
                     }
-                }
-            ],
-            language: {
-                "sProcessing": "处理中...",
-                "sLengthMenu": "显示 _MENU_ 项结果",
-                "sZeroRecords": "没有匹配结果",
-                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索:",
-                "sUrl": "",
-                "sEmptyTable": "表中数据为空",
-                "sLoadingRecords": "载入中...",
-                "sInfoThousands": ",",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "上页",
-                    "sNext": "下页",
-                    "sLast": "末页"
-                },
-                "oAria": {
-                    "sSortAscending": ": 以升序排列此列",
-                    "sSortDescending": ": 以降序排列此列"
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    var currentDate = date.getFullYear() + "-" + month + "-" + strDate
+                        + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+                    return currentDate;
                 }
             },
-            'initComplete': function (setting, json) {
-                App.init()
+            {
+                'data': function (row, type, val, meta) {
+                    var url = "/user/" + row.id + "/detail"
+                    return '<button type="button" onclick="App.getDetail(\'' + url + '\')" class="btn btn-sm btn-default"><i class="fa fa-search"></i>查看</button>' +
+                        ' <a href="/user/' + row.id + '/edit"><button type="button" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>编辑</button></a>' +
+                        ' <a href="/user/delete?id=' + row.id + '"><button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</button></a> '
+
+                }
             }
-        })
-    })
-</script>
-<script>
+        ];
+        dataTable = App.setTable("/user/page", columns);
+
+    });
+    function search() {
+        var username = $("#username").val();
+        var phone = $("#phone").val();
+        var email = $("#email").val();
+        // 搜索的参数
+        var param = {
+            'username': username,
+            'phone' :phone,
+            'email' : email
+        };
+        dataTable.settings()[0].ajax.data = param;
+        dataTable.ajax.reload();
+    }
+    // ------- 选择按钮------------
     var idArray = [];
     $(function () {
         $('#closeOk').bind('click',function () {
             $("#modal-delete").modal('hide');
         })
     })
-    function setData(data) {
-        if (data.status === 200) {
-            window.location.reload();
-        } else {
-            $('#deleteOk').unbind('click');
-            $('#deleteOk').bind('click',function () {
-                $("#modal-delete").modal('hide');
-            })
-            var time = function () {
-                $('#modal-message').html(data.message);
-                $("#modal-delete").modal('show');
-            }
-            setTimeout(time, 500);
-            time = null;
-        }
-    }
+    // 删除操作
     $(function () {
         $('#deleteOk').bind('click',function () {
             if (idArray.length !== 0) {
@@ -219,13 +197,27 @@
                     "type": 'POST',
                     "dataType": 'JSON',
                     "success": function (data) {
-                       setData(data);
+                        if (data.status === 200) {
+                            window.location.reload();
+                        } else {
+                            $('#deleteOk').unbind('click');
+                            $('#deleteOk').bind('click',function () {
+                                $("#modal-delete").modal('hide');
+                            })
+                            var time = function () {
+                                $('#modal-message').html(data.message);
+                                $("#modal-delete").modal('show');
+                            }
+                            setTimeout(time, 500);
+                            time = null;
+                        }
                     }
                 });
             }
             $("#modal-delete").modal('hide');
         })
     })
+    // 判断用户是否选择了数据项
     function deleteMulti() {
         var _checkBox = App.getCheckBox();
         _checkBox.each(function () {
