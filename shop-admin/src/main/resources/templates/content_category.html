@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>我的商城 | 内容管理</title>
+    <meta th:replace="commons/header">
+    <link rel="stylesheet" href="../asserts/plugins/treeTable/themes/vsStyle/treeTable.min.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- header -->
+    <div th:replace="commons/nav"></div>
+    <!--  sidebar  -->
+    <div th:replace="commons/menu"></div>
+    <!--  content  -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                内容管理
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li class="active">用户管理</li>
+            </ol>
+        </section>
+        <!--  main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">分类列表</h3>
+                            <div class="box-body">
+                                <a href="/user/form">
+                                    <button type="button" class="btn btn-sm btn-default"><i class="fa fa-plus"></i>新增</button>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i>导入</button>
+                                <button type="button" class="btn btn-sm btn-default"><i class="fa fa-upload"></i>导出</button>
+                            </div>
+                        </div>
+                        <div class="box-body table-responsive">
+                            <table id="treeTable" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>名称</th>
+                                    <th>排序</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="c : ${content}" th:id="${c.id}" th:pId = "${c.parentId}">
+                                        <td th:text="${c.id}"></td>
+                                        <td th:text="${c.name}"></td>
+                                        <td th:text="${c.sortOrder}"></td>
+                                        <td>
+                                            <a href='#'><button type="button" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>编辑</button></a>
+                                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</button>
+                                            <a href='#'><button type="button" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>新增下级菜单</button></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:replace="commons/copyright"></div>
+</div>
+<div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button id="closeOk" type="button" class="btn btn-default">关闭</button>
+                <button id="deleteOk" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="commons/footer"></div>
+<script src="../asserts/plugins/treeTable/jquery.treeTable.min.js"></script>
+<script>
+    $(function () {
+        $('#treeTable').treeTable({
+            column : 1,
+            expendLevel: 2
+        });
+    })
+</script>
+</body>
+</html>

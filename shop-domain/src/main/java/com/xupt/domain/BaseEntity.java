@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Data
 public abstract class BaseEntity {
-    private Integer id;
+    private Long id;
     private Date created;
     private Date updated;
 }
