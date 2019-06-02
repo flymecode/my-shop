@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface ContentCategoryService {
     List<ContentCategory> findAll();
+
+    List<ContentCategory> findTreData(Long pid);
 }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>商城</title>
+    <meta th:replace="commons/header">
+    <link rel="stylesheet" href="../asserts/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- header -->
+    <div th:replace="commons/nav"></div>
+    <!--  sidebar  -->
+    <div th:replace="commons/menu"></div>
+    <!--  content  -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                内容管理
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li class="active">控制面板</li>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div th:if="${contentResult != null}">
+                        <div th:class="${contentResult.status == 200 ? 'alert alert-success alert-dismissible':'alert alert-danger alert-dismissible'}">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                            <div th:text="${contentResult.message}"></div>
+                        </div>
+                    </div>
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" th:text="${content==null?'新增用户':'编辑用户'}">新增分类</h3>
+                        </div>
+                        <form class="form-horizontal" id="inputForm" method="post" action="/user/save">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">父级类目</label>
+                                    <div class="col-sm-10">
+                                        <input data-toggle="modal" data-target="#modal-default" type="text"  class="form-control required" id="inputEmail3" placeholder="请选择" readonly="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <button type="button" class="btn btn-default" onclick="history.go(-1)">返回</button>
+                                <button type="submit" class="btn btn-info pull-right">确定</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:replace="commons/copyright"></div>
+</div>
+<div th:replace="commons/footer"></div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">
+                    <ul id="myTree" class="ztree"></ul>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="closeOk" type="button" class="btn btn-default">关闭</button>
+                <button id="deleteOk" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../asserts/plugins/jquery-ztree/js/jquery.ztree.core-3.5.min.js"></script>
+<script>
+    $(function () {
+        var setting = {
+            async: {
+                enable : true,
+                url: '/content/data',
+                autoParam: ['id']
+            }
+        }
+        
+        function filter(treeId,parentId,childNodes) {
+            
+        }
+
+        $.fn.zTree.init($('#myTree'), setting);
+    })
+</script>
+</body>
+</html>

@@ -15,4 +15,6 @@ public interface ContentCategoryMapper {
 
     @Select("select * from tb_content_category order by parent_id asc, sort_order asc,is_parent desc")
     List<ContentCategory> findAll();
+    @Select("select * from tb_content_category where parent_id = #{pid} order by parent_id asc, sort_order asc,is_parent desc")
+    List<ContentCategory> findTreeData(Long pid);
 }

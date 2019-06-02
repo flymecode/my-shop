@@ -21,4 +21,10 @@ public class ContentCategoryServiceImpl implements ContentCategoryService {
     public List<ContentCategory> findAll() {
         return contentCategoryMapper.findAll();
     }
+
+    @Override
+    public List<ContentCategory> findTreData(Long pid) {
+        return contentCategoryMapper.findTreeData(pid);
+    }
+
 }

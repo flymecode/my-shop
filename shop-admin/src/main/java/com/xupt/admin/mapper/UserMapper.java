@@ -21,6 +21,7 @@ public interface UserMapper {
 
     @SelectProvider(type = UserProvicer.class,method = "serachUser")
     List<User> searchUsers();
+
     @SelectProvider(type = UserProvicer.class,method = "deleteUsers")
     void deleteUsers(String id);
 
