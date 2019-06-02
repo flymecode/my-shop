@@ -6,10 +6,7 @@ import com.xupt.domain.ContentCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +31,11 @@ public class ContentCategoryController {
     }
     @ResponseBody
     @PostMapping("/data")
-    public List<ContentCategory> treeData(Long pid) {
-        if (pid == null) {
-            pid = 0L;
+    public List<ContentCategory> treeData(Long id) {
+        if (id == null) {
+            id = 0L;
         }
-        List<ContentCategory> list = contentCategoryService.findTreData(pid);
+        List<ContentCategory> list = contentCategoryService.findTreData(id);
         return list;
     }
 }
