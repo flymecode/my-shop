@@ -2,6 +2,33 @@ var App = function () {
     var masterCheck;
     var checkBox;
 
+
+    /**
+     * 文件上传
+     * @param elementId
+     * @param url
+     */
+    var handlerInitDropzone = function (elementId, url) {
+        Dropzone.autoDiscover = false;
+        var myDropzone = new Dropzone(elementId, {
+            url: url,
+            dictDefaultMessage : '拖动文件至此或者点击上传',
+            paramName : 'dropFile',
+            maxFileszie: 2,
+            acceptedFiles: '.jpg,.git,.png,.jpeg',
+            addRemoveLinks: true,
+            dictResponseError: '文件上传失败',
+            dictRemoveLinks: '删除',
+            dictCancelUpload: '取消',
+            dictFileTooBig: '文件过大上传文件最大支持',
+            dictFallbackMessage: '浏览器不支持',
+            init: function () {
+                this.on('success', function (file, data) {
+                    $("#pic").val(data.fileName);
+                });
+            }
+        });
+    };
     var handInitCheckBox = function () {
         $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
@@ -80,6 +107,31 @@ var App = function () {
         })
         return dataTable;
     }
+
+    var handlerInitTree = function (url, param,callback) {
+        var setting = {
+            view : {
+                selectedMulti:false
+            },
+            async: {
+                enable : true,
+                type: 'post',
+                url: url,
+                autoParam: param
+            }
+        }
+
+        $.fn.zTree.init($('#myTree'), setting);
+        $('#btnOk').bind('click', function () {
+            var zTree = $.fn.zTree.getZTreeObj('myTree');
+            var nodes = zTree.getSelectedNodes();
+            if (nodes.length == 0) {
+                alert('请选择一个节点')
+            } else {
+                callback(nodes);
+            }
+        });
+    };
     
     return {
         init: function () {
@@ -109,6 +161,12 @@ var App = function () {
          */
         getDetail: function (url) {
             handlerShowDetail();
+        },
+        getTree: function (url, param, callbcak) {
+            handlerInitTree(url, param, callbcak);
+        },
+        dropz: function (elementId, url) {
+            handlerInitDropzone(elementId, url);
         }
     }
 

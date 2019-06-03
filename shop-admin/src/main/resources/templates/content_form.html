@@ -4,6 +4,8 @@
     <title>商城</title>
     <meta th:replace="commons/header">
     <link rel="stylesheet" href="../asserts/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css">
+    <link rel="stylesheet" href="../asserts/plugins/dropzone/min/dropzone.min.css">
+    <link rel="stylesheet" href="../asserts/plugins/dropzone/min/basic.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -39,11 +41,71 @@
                             <h3 class="box-title" th:text="${content==null?'新增用户':'编辑用户'}">新增分类</h3>
                         </div>
                         <form class="form-horizontal" id="inputForm" method="post" action="/user/save">
+
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">父级类目</label>
+                                    <label for="category" class="col-sm-2 control-label">父级类目</label>
                                     <div class="col-sm-10">
-                                        <input data-toggle="modal" data-target="#modal-default" type="text"  class="form-control required" id="inputEmail3" placeholder="请选择" readonly="true">
+                                        <input type="hidden" id="node" name="id">
+                                        <input  id="category" data-toggle="modal"  data-target="#modal-default" type="text"  class="form-control required" placeholder="请选择" readonly="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="category1" class="col-sm-2 control-label">标题</label>
+                                    <div class="col-sm-10">
+                                        <input  id="category1"   type="text"  class="form-control required" placeholder="标题" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="category2" class="col-sm-2 control-label">子标题</label>
+                                    <div class="col-sm-10">
+                                        <input  id="category2"   type="text"  class="form-control required" placeholder="子标题" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="category1" class="col-sm-2 control-label">标题描述</label>
+                                    <div class="col-sm-10">
+                                        <input  id="category3"   type="text"  class="form-control required" placeholder="标题描述" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="category2" class="col-sm-2 control-label">链接</label>
+                                    <div class="col-sm-10">
+                                        <input  id="category4"   type="text"  class="form-control required" placeholder="链接" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="pic" class="col-sm-2 control-label">图片一</label>
+                                    <div class="col-sm-10">
+                                        <input  id="pic"   type="text"  class="form-control required" placeholder="图片一" >
+                                        <div class="dropzone" id="dropz" style="margin-top: 5px;border: solid 2px #00C0EF "></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="pic2" class="col-sm-2 control-label">图片二</label>
+                                    <div class="col-sm-10">
+                                        <input  id="pic2"   type="text"  class="form-control required" placeholder="图片二" >
+                                        <div class="dropzone" id="drop1z" style="margin-top: 5px;border: solid 2px #00C0EF "></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="category2" class="col-sm-2 control-label">详情</label>
+                                    <div class="col-sm-10">
+                                        <textarea  id="category7"  rows="7"  class="form-control required" placeholder="详情" ></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -75,28 +137,23 @@
             </div>
             <div class="modal-footer">
                 <button id="closeOk" type="button" class="btn btn-default">关闭</button>
-                <button id="deleteOk" type="button" class="btn btn-primary">确定</button>
+                <button id="btnOk" type="button" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
 </div>
 <script src="../asserts/plugins/jquery-ztree/js/jquery.ztree.core-3.5.min.js"></script>
+<script src="../asserts/plugins/dropzone/min/dropzone.min.js"></script>
 <script>
     $(function () {
-        var setting = {
-            async: {
-                enable : true,
-                url: '/content/data',
-                autoParam: ['id']
-            }
-        }
-        
-        function filter(treeId,parentId,childNodes) {
-            
-        }
-
-        $.fn.zTree.init($('#myTree'), setting);
+        App.getTree('/content/data',['id'],function (nodes) {
+            var node = nodes[0];
+            $('#category').attr('value',node.name);
+            $('#node').attr('value', node.id);
+            $('#modal-default').modal('hide');
+        })
     })
+    App.dropz('#dropz', '/upload');
 </script>
 </body>
 </html>

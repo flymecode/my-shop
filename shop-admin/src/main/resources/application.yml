@@ -42,10 +42,14 @@ spring:
 # server
 server:
   port: 8080
-
+# log
 logging:
   level:
     com.xupt.admin.mappper: debug
+# mybatis
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+# 七牛云
+qiniu:
+  accesskey: 1
