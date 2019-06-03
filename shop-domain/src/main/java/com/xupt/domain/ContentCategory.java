@@ -1,12 +1,14 @@
 package com.xupt.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author maxu
  * @date 2019/6/1
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ContentCategory extends BaseEntity{
     private Long parentId;
     private Integer status;

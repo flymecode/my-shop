@@ -1,19 +1,19 @@
 package com.xupt.admin.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.xupt.admin.service.ContentService;
+import com.xupt.admin.validator.ContentForm;
 import com.xupt.common.dto.ResultMap;
 import com.xupt.domain.Content;
-import com.xupt.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.Valid;
 
 /**
  * @author maxu
@@ -28,9 +28,9 @@ public class ContentController {
 
 
     @PostMapping("/save")
-    public String saveUser(User user, Model model) {
-        ResultMap fail = ResultMap.fail();
-        model.addAttribute("contentResult", fail);
+    public String saveContent(@Valid ContentForm content, Model model , BindingResult bindingResult) {
+        ResultMap resultMap = contentService.saveContent(content);
+        model.addAttribute("contentResult", resultMap);
         return "content_list";
     }
 
@@ -48,9 +48,8 @@ public class ContentController {
     }
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
-        contentService.updateContent(id);
-        ResultMap success = ResultMap.success();
-        redirectAttributes.addFlashAttribute("baseResult", success);
+        ResultMap  resultMap = contentService.updateContent(id);
+        redirectAttributes.addFlashAttribute("baseResult", resultMap);
         return "redirect:/content/list";
     }
 
@@ -62,24 +61,16 @@ public class ContentController {
 
     @ResponseBody
     @PostMapping("/delete")
-    public ResultMap deleteUsers(@RequestParam("ids") String ids) {
-        log.info(ids);
-        ResultMap success = ResultMap.fail();
-        contentService.deleteContents(ids);
-        return success;
+    public ResponseEntity deleteUsers(@RequestParam("ids") String ids) {
+        ResultMap resultMap = contentService.deleteContents(ids);
+        return ResponseEntity.status(resultMap.getCode()).body(resultMap);
     }
     @ResponseBody
     @GetMapping("/page")
-    public Map<String,Object> listUsersPage(@RequestParam(value = "start",defaultValue = "0") Integer start,
-                                            @RequestParam(value = "length",defaultValue = "10") Integer length,
-                                            @RequestParam(value = "draw",defaultValue = "1") Integer draw) {
-        PageInfo<Content> contents = contentService.listContents(start, length);
-        Map<String, Object> result = new HashMap<>();
-        result.put("draw",draw);
-        result.put("recordsTotal",contents.getTotal());
-        result.put("recordsFiltered",contents.getTotal());
-        result.put("data",contents.getList());
-        result.put("error","");
-        return result;
+    public ResponseEntity listUsersPage(@RequestParam(value = "start",defaultValue = "0") Integer start,
+                                        @RequestParam(value = "length",defaultValue = "10") Integer length,
+                                        @RequestParam(value = "draw",defaultValue = "1") Integer draw) {
+        ResultMap resultMap = contentService.listContents(start, length, draw);
+        return ResponseEntity.status(resultMap.getCode()).body(resultMap);
     }
 }

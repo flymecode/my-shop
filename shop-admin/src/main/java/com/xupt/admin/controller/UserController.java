@@ -1,6 +1,5 @@
 package com.xupt.admin.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.xupt.admin.service.UserService;
 import com.xupt.admin.validator.UserForm;
 import com.xupt.common.dto.ResultMap;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,10 +29,12 @@ public class UserController {
     @PostMapping("/save")
     public String saveUser(@Valid UserForm user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            log.info(bindingResult.getFieldError().getDefaultMessage());
+            ResultMap resultMap = new ResultMap().fail().message(bindingResult.getFieldError().getDefaultMessage());
+            model.addAttribute("baseResult", resultMap);
+            return "user_list";
         }
-        ResultMap fail = ResultMap.fail();
-        model.addAttribute("baseResult", fail);
+        ResultMap resultMap = userService.saveUser(user);
+        model.addAttribute("baseResult", resultMap);
         return "user_list";
     }
 
@@ -53,8 +53,7 @@ public class UserController {
     }
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
-        userService.updateUser(id);
-        ResultMap success = ResultMap.success();
+        ResultMap success  = userService.updateUser(id);
         redirectAttributes.addFlashAttribute("baseResult", success);
         return "redirect:/user/list";
     }
@@ -68,23 +67,16 @@ public class UserController {
     @ResponseBody
     @PostMapping("/delete")
     public ResultMap deleteUsers(@RequestParam("ids") String ids) {
-        log.info(ids);
-        ResultMap success = ResultMap.fail();
-        userService.deleteUsers(ids);
-        return success;
+        ResultMap resultMap = userService.deleteUsers(ids);
+        return resultMap;
     }
     @ResponseBody
     @GetMapping("/page")
     public Map<String,Object> listUsersPage(@RequestParam(value = "start",defaultValue = "0") Integer start,
                              @RequestParam(value = "length",defaultValue = "10") Integer length,
                              @RequestParam(value = "draw",defaultValue = "1") Integer draw) {
-        PageInfo<User> users = userService.listUsers(start, length);
-        Map<String, Object> result = new HashMap<>();
-        result.put("draw",draw);
-        result.put("recordsTotal",users.getTotal());
-        result.put("recordsFiltered",users.getTotal());
-        result.put("data",users.getList());
-        result.put("error","");
-        return result;
+        ResultMap resultMap = userService.listUsers(start, length, draw);
+
+        return resultMap;
     }
 }

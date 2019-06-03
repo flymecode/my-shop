@@ -4,7 +4,7 @@
 
 import $ from '../util/dom-core.js'
 import { getPasteText, getPasteHtml, getPasteImgs } from '../util/paste-handle.js'
-import { UA, isFunction } from '../util/util.js'
+import { UA, isFunction, replaceHtmlSymbol } from '../util/util.js'
 
 // 获取一个 elem.childNodes 的 JSON 数据
 function getChildrenJSON($elem) {
@@ -17,6 +17,7 @@ function getChildrenJSON($elem) {
         // 文本节点
         if (nodeType === 3) {
             elemResult = curElem.textContent
+            elemResult = replaceHtmlSymbol(elemResult)
         }
 
         // 普通 DOM 节点
@@ -334,6 +335,7 @@ Text.prototype = {
         const config = editor.config
         const pasteFilterStyle = config.pasteFilterStyle
         const pasteTextHandle = config.pasteTextHandle
+        const ignoreImg = config.pasteIgnoreImg
         const $textElem = editor.$textElem
 
         // 粘贴图片、文本的事件，每次只能执行一个
@@ -342,8 +344,8 @@ Text.prototype = {
         function canDo() {
             var now = Date.now()
             var flag = false
-            if (now - pasteTime >= 500) {
-                // 间隔大于 500 ms ，可以执行
+            if (now - pasteTime >= 100) {
+                // 间隔大于 100 ms ，可以执行
                 flag = true
             }
             pasteTime = now
@@ -368,7 +370,7 @@ Text.prototype = {
             }
 
             // 获取粘贴的文字
-            let pasteHtml = getPasteHtml(e, pasteFilterStyle)
+            let pasteHtml = getPasteHtml(e, pasteFilterStyle, ignoreImg)
             let pasteText = getPasteText(e)
             pasteText = pasteText.replace(/\n/gm, '<br>')
 

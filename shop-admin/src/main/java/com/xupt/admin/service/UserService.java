@@ -1,6 +1,7 @@
 package com.xupt.admin.service;
 
-import com.github.pagehelper.PageInfo;
+import com.xupt.admin.validator.UserForm;
+import com.xupt.common.dto.ResultMap;
 import com.xupt.domain.User;
 
 /**
@@ -9,13 +10,13 @@ import com.xupt.domain.User;
  * @date 2019/5/29
  */
 public interface UserService {
-    void saveUser(User user);
+    ResultMap saveUser(UserForm user);
 
-    PageInfo<User> listUsers(Integer page, Integer count);
+    ResultMap listUsers(Integer page, Integer count, Integer draw);
 
-    void deleteUsers(String ids);
+    ResultMap deleteUsers(String ids);
 
-    void updateUser(Integer id);
+    ResultMap updateUser(Integer id);
 
     User getUser(Integer id);
 }

@@ -52,4 +52,7 @@ mybatis:
     map-underscore-to-camel-case: true
 # 七牛云
 qiniu:
-  accesskey: 1
+  accessKey: w_8Sa-BkabNGyD5ymN1MDno-VHNwjaYM2SN2_KY3
+  secretKey: 9Hq8hUj_iv54njRyqmQxmr5791_2RiQ-_DQe_dlQ
+  bucket:  oc-bucket
+  path: psic7eu47.bkt.clouddn.com

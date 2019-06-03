@@ -1,6 +1,7 @@
 package com.xupt.admin.service;
 
-import com.github.pagehelper.PageInfo;
+import com.xupt.admin.validator.ContentForm;
+import com.xupt.common.dto.ResultMap;
 import com.xupt.domain.Content;
 
 /**
@@ -11,9 +12,11 @@ public interface ContentService {
 
     Content getContent(Integer id);
 
-    void updateContent(Integer id);
+    ResultMap updateContent(Integer id);
 
-    PageInfo<Content> listContents(Integer start, Integer length);
+    ResultMap listContents(Integer integer, Integer start, Integer length);
 
-    void deleteContents(String ids);
+    ResultMap deleteContents(String ids);
+
+    ResultMap saveContent(ContentForm content);
 }

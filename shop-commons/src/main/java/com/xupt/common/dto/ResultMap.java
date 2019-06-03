@@ -1,41 +1,69 @@
 package com.xupt.common.dto;
 
-import lombok.Data;
+import com.xupt.common.enums.HttpCodeEnum;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * @author maxu
  * @date 2019/5/29
  */
-@Data
-public class ResultMap implements Serializable {
-    private int status;
-    private String message;
+public class ResultMap extends HashMap<String,Object> implements Serializable {
+    private HashMap<String, Object> header;
 
-    public static ResultMap success() {
-        return createResultMap(200,"成功");
+    private int code = HttpCodeEnum.OK.getCode();
+
+    public ResultMap() {
+
     }
-    public static ResultMap fail() {
-        return createResultMap(500, "失败");
-    }
-    public static ResultMap success(String message) {
-        return createResultMap(200, message);
-    }
-    public static ResultMap success(int status,String message) {
-        return createResultMap(status, message);
-    }
-    public static ResultMap fail(String message) {
-        return createResultMap(500, message);
-    }
-    public static ResultMap fail(int status,String message) {
-        return createResultMap(status, message);
+    public ResultMap success() {
+        this.code = HttpCodeEnum.OK.getCode();
+        this.header = new HashMap<>();
+        this.header.put("code", this.code);
+        this.header.put("msg", "Success");
+        this.put("header", header);
+        this.put("data", "");
+        return this;
     }
 
-    private static ResultMap createResultMap(int status, String message) {
-        ResultMap resultMap = new ResultMap();
-        resultMap.setStatus(status);
-        resultMap.setMessage(message);
-        return resultMap;
+    public ResultMap fail() {
+        this.code = HttpCodeEnum.FAIL.getCode();
+        this.header = new HashMap<>();
+        this.header.put("code", code);
+        this.put("header", header);
+        this.put("payload", "");
+        return this;
+    }
+
+    public ResultMap fail(int code) {
+        this.code = code;
+        this.header = new HashMap<>();
+        this.header.put("code", code);
+        this.put("header", header);
+        this.put("payload", "");
+        return this;
+    }
+
+    public ResultMap message(String message) {
+        this.header.put("msg", message);
+        this.put("header", header);
+        return this;
+    }
+
+    public ResultMap payload(Object object) {
+        this.put("data", null == object ? "" : object);
+        return this;
+    }
+
+    public ResultMap payloads(Collection list) {
+        this.put("data", null == list ? new ArrayList() : list);
+        return this;
+    }
+
+    public int getCode() {
+        return code;
     }
 }
