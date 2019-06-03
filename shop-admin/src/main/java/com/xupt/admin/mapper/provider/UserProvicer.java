@@ -1,5 +1,7 @@
 package com.xupt.admin.mapper.provider;
 
+import com.xupt.admin.validator.UserForm;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
 /**
@@ -8,10 +10,19 @@ import org.apache.ibatis.jdbc.SQL;
  */
 public class UserProvicer {
 
-    public String serachUser() {
-        return new SQL(){{
+    public String serachUser(final UserForm user) {
+       return new SQL(){{
             SELECT("id,username,phone,email,updated");
             FROM("tb_user");
+            if (StringUtils.isNotEmpty(user.getUsername())) {
+                WHERE("username like '" + user.getUsername() + "%'");
+            }
+            if (StringUtils.isNotEmpty(user.getEmail())) {
+                WHERE("email like '" + user.getEmail() + "%'");
+            }
+            if (StringUtils.isNotEmpty(user.getPhone())) {
+                WHERE("phone like '" + user.getPhone() + "%'");
+            }
         }}.toString();
     }
 

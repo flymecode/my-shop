@@ -10,13 +10,13 @@ import com.xupt.domain.User;
  * @date 2019/5/29
  */
 public interface UserService {
-    ResultMap saveUser(UserForm user);
+    ResultMap saveUser(User user);
 
-    ResultMap listUsers(Integer page, Integer count, Integer draw);
+    ResultMap listUsers(Integer page, Integer count, Integer draw, UserForm userForm);
 
     ResultMap deleteUsers(String ids);
 
     ResultMap updateUser(Integer id);
 
-    User getUser(Integer id);
+    ResultMap getUser(Integer id);
 }

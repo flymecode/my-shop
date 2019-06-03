@@ -31,7 +31,7 @@
                         <div class="alert alert-success alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                            <div th:text="${baseResult.message}"></div>
+                            <div th:text="${baseResult.msg}"></div>
                         </div>
                     </div>
                     <div class="box">
@@ -46,7 +46,7 @@
                                 <button type="button" class="btn btn-sm btn-default"><i class="fa fa-upload"></i>导出</button>
                             </div>
                             <div class="row" style="padding: 15px">
-                                <form class="form-horizontal" action="/user/search" method="post" >
+                                <form class="form-horizontal">
                                     <div class="col-xs-4">
                                         <div class="form-group">
                                             <label for="username" class="col-sm-2 control-label">姓名</label>
@@ -140,18 +140,7 @@
             {'data': 'email'},
             {
                 'data': function (data) {
-                    var date = new Date(data.updated);
-                    var month = date.getMonth() + 1;
-                    var strDate = date.getDate();
-                    if (month >= 1 && month <= 9) {
-                        month = "0" + month;
-                    }
-                    if (strDate >= 0 && strDate <= 9) {
-                        strDate = "0" + strDate;
-                    }
-                    var currentDate = date.getFullYear() + "-" + month + "-" + strDate
-                        + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-                    return currentDate;
+                    return App.formateTime(data);
                 }
             },
             {
@@ -167,19 +156,7 @@
         dataTable = App.setTable("/user/page", columns);
 
     });
-    function search() {
-        var username = $("#username").val();
-        var phone = $("#phone").val();
-        var email = $("#email").val();
-        // 搜索的参数
-        var param = {
-            'username': username,
-            'phone' :phone,
-            'email' : email
-        };
-        dataTable.settings()[0].ajax.data = param;
-        dataTable.ajax.reload();
-    }
+
     // ------- 选择按钮------------
     var idArray = [];
     $(function () {
@@ -233,6 +210,20 @@
             $('#modal-message').html('你确定删除吗？');
             $("#modal-delete").modal('show');
         }
+    }
+
+    function search() {
+        var username = $("#username").val();
+        var phone = $("#phone").val();
+        var email = $("#email").val();
+        // 搜索的参数
+        var param = {
+            'username': username,
+            'phone' :phone,
+            'email' : email
+        };
+        dataTable.settings()[0].ajax.data = param;
+        dataTable.ajax.reload();
     }
 </script>
 </body>

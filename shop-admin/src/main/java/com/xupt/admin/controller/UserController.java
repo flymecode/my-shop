@@ -6,6 +6,7 @@ import com.xupt.common.dto.ResultMap;
 import com.xupt.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,29 +28,29 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/save")
-    public String saveUser(@Valid UserForm user, BindingResult bindingResult, Model model) {
+    public String saveUser(@Valid User user, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             ResultMap resultMap = new ResultMap().fail().message(bindingResult.getFieldError().getDefaultMessage());
             model.addAttribute("baseResult", resultMap);
-            return "user_list";
+            return "user_form";
         }
         ResultMap resultMap = userService.saveUser(user);
-        model.addAttribute("baseResult", resultMap);
-        return "user_list";
+        redirectAttributes.addFlashAttribute("baseResult", resultMap);
+        return "redirect:/user/list";
     }
 
     @GetMapping("/{id}/edit")
     public String getUser(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes) {
-        User user = userService.getUser(id);
+        ResultMap user = userService.getUser(id);
         log.info(user.toString());
         redirectAttributes.addFlashAttribute("user", user);
         return "redirect:/user/form";
     }
     @ResponseBody
     @GetMapping("/{id}/detail")
-    public User getUserDetail(@PathVariable("id") Integer id) {
-        User user = userService.getUser(id);
-        return user;
+    public ResponseEntity getUserDetail(@PathVariable("id") Integer id) {
+        ResultMap resultMap = userService.getUser(id);
+        return ResponseEntity.status(resultMap.getCode()).body(resultMap);
     }
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
@@ -58,25 +59,18 @@ public class UserController {
         return "redirect:/user/list";
     }
 
-    @PostMapping("/search")
-    public String searchUsers() {
-        log.info("来了");
-        return "user_list";
-    }
-
     @ResponseBody
-    @PostMapping("/delete")
+    @GetMapping("/delete")
     public ResultMap deleteUsers(@RequestParam("ids") String ids) {
         ResultMap resultMap = userService.deleteUsers(ids);
         return resultMap;
     }
     @ResponseBody
     @GetMapping("/page")
-    public Map<String,Object> listUsersPage(@RequestParam(value = "start",defaultValue = "0") Integer start,
+    public Map<String,Object> listUsersPage(@RequestParam(value = "start",defaultValue = "0") Integer start, UserForm userForm,
                              @RequestParam(value = "length",defaultValue = "10") Integer length,
                              @RequestParam(value = "draw",defaultValue = "1") Integer draw) {
-        ResultMap resultMap = userService.listUsers(start, length, draw);
-
+        ResultMap resultMap = userService.listUsers(start, length, draw, userForm);
         return resultMap;
     }
 }

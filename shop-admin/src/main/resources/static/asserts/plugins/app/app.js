@@ -38,6 +38,21 @@ var App = function () {
         checkBox = $('input[type="checkbox"].minimal');
 
     };
+    var formateTime = function (data) {
+        var date = new Date(data.updated);
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentDate = date.getFullYear() + "-" + month + "-" + strDate
+            + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return currentDate;
+    };
+
     var handlerCheckBoxAll = function () {
         masterCheck.on('ifClicked',function (e) {
             if (e.target.checked) {
@@ -51,9 +66,12 @@ var App = function () {
         $.ajax({
             url: url,
             type: 'get',
-            dataType: 'html',
+            dataType: 'json',
             success: function (data) {
-                $('.modal-detail-body').html(data);
+                $("#v-username").text(data.data.username);
+                $("#v-email").text(data.data.email);
+                $("#v-updated").text(data.data.updated);
+                $("#v-phone").text(data.data.phone);
                 $("#modal-detail").modal('show');
             }
         })
@@ -160,13 +178,16 @@ var App = function () {
          * @param url
          */
         getDetail: function (url) {
-            handlerShowDetail();
+            handlerShowDetail(url);
         },
         getTree: function (url, param, callbcak) {
             handlerInitTree(url, param, callbcak);
         },
         dropz: function (elementId, url) {
             handlerInitDropzone(elementId, url);
+        },
+        formateTime: function (data) {
+            return formateTime(data);
         }
     }
 

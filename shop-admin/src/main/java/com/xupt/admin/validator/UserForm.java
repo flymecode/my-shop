@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 public class UserForm {
+    private Long id;
     @Length(min = 6, max = 20, message = "姓名的长度必须介于 6-20 位")
     private String username;
     private String email;

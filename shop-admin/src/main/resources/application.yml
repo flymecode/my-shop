@@ -45,7 +45,11 @@ server:
 # log
 logging:
   level:
-    com.xupt.admin.mappper: debug
+    com.xupt: trace
+  path: /log
+
+
+
 # mybatis
 mybatis:
   configuration:
