@@ -3,6 +3,9 @@ package com.xupt.admin.service;
 import com.xupt.admin.validator.UserForm;
 import com.xupt.common.dto.ResultMap;
 import com.xupt.domain.User;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * user service
@@ -19,4 +22,8 @@ public interface UserService {
     ResultMap updateUser(Integer id);
 
     ResultMap getUser(Integer id);
+
+    ResultMap deleteUser(Long id);
+
+    boolean batchImport(String fileName, MultipartFile file) throws IOException, Exception;
 }

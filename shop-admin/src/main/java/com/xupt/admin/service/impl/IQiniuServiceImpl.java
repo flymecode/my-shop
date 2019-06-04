@@ -9,6 +9,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.xupt.admin.service.IQiniuService;
+import com.xupt.common.dto.ResultMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ public class IQiniuServiceImpl implements IQiniuService {
     private String path;
 
     @Override
-    public String upload(byte[] data) {
+    public ResultMap upload(byte[] data) {
+        ResultMap resultMap = new ResultMap();
         StringBuffer imgUrl  = new StringBuffer("http://"+path+"/");
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone0());
@@ -56,6 +58,7 @@ public class IQiniuServiceImpl implements IQiniuService {
                 log.info("文件上传失败");
             }
         }
-        return imgUrl.toString();
+        resultMap.put("url", imgUrl.toString());
+        return resultMap;
     }
 }

@@ -17,6 +17,7 @@ public interface UserMapper {
     @Insert("insert into tb_user (username,password,phone,email,created,updated) values (#{user.username},#{user.password},#{user.phone},#{user.email},#{user.created},#{user.updated})")
     void insertUser(@Param("user") User user);
 
+    @Update("update tbu_user username = #{username}, password = #{user.password},email = #{user.email},phone = #{user.phone}")
     void updateUser(User user);
 
     @SelectProvider(type = UserProvicer.class, method = "serachUser")
@@ -28,4 +29,10 @@ public interface UserMapper {
     @Select("select id,username,password,email,updated, phone from tb_user where id = #{id}")
     User getUser(@Param("id") Integer id);
 
+    @Delete("delete from tb_user where id = #{id}")
+    int deleteUser(Long id);
+
+    void updateUserByName(User userResord);
+
+    int selectUserByName(String name);
 }

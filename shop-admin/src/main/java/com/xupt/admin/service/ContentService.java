@@ -2,7 +2,6 @@ package com.xupt.admin.service;
 
 import com.xupt.admin.validator.ContentForm;
 import com.xupt.common.dto.ResultMap;
-import com.xupt.domain.Content;
 
 /**
  * @author maxu
@@ -10,7 +9,7 @@ import com.xupt.domain.Content;
  */
 public interface ContentService {
 
-    Content getContent(Integer id);
+    ResultMap getContent(Integer id);
 
     ResultMap updateContent(Integer id);
 

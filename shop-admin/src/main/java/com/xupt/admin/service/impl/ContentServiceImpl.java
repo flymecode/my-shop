@@ -7,9 +7,13 @@ import com.xupt.admin.service.ContentService;
 import com.xupt.admin.validator.ContentForm;
 import com.xupt.common.dto.ResultMap;
 import com.xupt.domain.Content;
+import com.xupt.domain.ContentCategory;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,8 +26,15 @@ public class ContentServiceImpl implements ContentService {
     private ContentMapper contentMapper;
 
     @Override
-    public Content getContent(Integer id) {
-        return null;
+    public ResultMap getContent(Integer id) {
+        ResultMap resultMap = new ResultMap();
+        Content content = contentMapper.searchContent(id);
+        ContentCategory contentCategory = content.getContentCategory();
+        if (StringUtils.isNotEmpty(contentCategory.getName())) {
+            contentCategory.setName("/");
+        }
+        resultMap.payload(content);
+        return resultMap;
     }
 
     @Override
@@ -48,12 +59,21 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public ResultMap deleteContents(String ids) {
-
-        return null;
+        ResultMap resultMap = new ResultMap();
+        contentMapper.deleteContent(ids);
+        resultMap.message("删除成功");
+        return resultMap;
     }
 
     @Override
     public ResultMap saveContent(ContentForm content) {
-        return null;
+        ResultMap resultMap = new ResultMap();
+        Content tbContent = new Content();
+        BeanUtils.copyProperties(content, tbContent);
+        Date date = new Date();
+        tbContent.setCreated(date);
+        tbContent.setUpdated(date);
+        contentMapper.saveContent(tbContent);
+        return resultMap;
     }
 }

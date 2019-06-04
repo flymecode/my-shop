@@ -65,11 +65,19 @@ public class UserController {
         ResultMap resultMap = userService.deleteUsers(ids);
         return resultMap;
     }
+
+    @GetMapping("/{id}/delete")
+    public String deleteUser(@PathVariable("id") String id,RedirectAttributes redirectAttributes) {
+        ResultMap resultMap = userService.deleteUser(Long.valueOf(id));
+        redirectAttributes.addFlashAttribute("baseResult", resultMap);
+        return "redirect:/user/list";
+    }
     @ResponseBody
     @GetMapping("/page")
     public Map<String,Object> listUsersPage(@RequestParam(value = "start",defaultValue = "0") Integer start, UserForm userForm,
                              @RequestParam(value = "length",defaultValue = "10") Integer length,
                              @RequestParam(value = "draw",defaultValue = "1") Integer draw) {
+        log.info("{},{}",String.valueOf(start),String.valueOf(length));
         ResultMap resultMap = userService.listUsers(start, length, draw, userForm);
         return resultMap;
     }

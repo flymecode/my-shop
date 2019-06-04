@@ -27,11 +27,11 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div th:if="${baseResult != null}">
+                    <div th:if="${baseResult != null}" id="message">
                         <div class="alert alert-success alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                            <div th:text="${baseResult.msg}"></div>
+                            <div th:text="${baseResult.header.msg}"></div>
                         </div>
                     </div>
                     <div class="box">
@@ -43,7 +43,7 @@
                                 </a>
                                 <button type="button" class="btn btn-sm btn-default" onclick="deleteMulti()"><i class="fa fa-trash"></i>删除</button>
                                 <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i>导入</button>
-                                <button type="button" class="btn btn-sm btn-default"><i class="fa fa-upload"></i>导出</button>
+                                <button type="button" onclick="sexport()" class="btn btn-sm btn-default"><i class="fa fa-upload"></i>导出</button>
                             </div>
                             <div class="row" style="padding: 15px">
                                 <form class="form-horizontal">
@@ -148,8 +148,7 @@
                     var url = "/user/" + row.id + "/detail"
                     return '<button type="button" onclick="App.getDetail(\'' + url + '\')" class="btn btn-sm btn-default"><i class="fa fa-search"></i>查看</button>' +
                         ' <a href="/user/' + row.id + '/edit"><button type="button" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>编辑</button></a>' +
-                        ' <a href="/user/delete?id=' + row.id + '"><button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</button></a> '
-
+                        ' <a href="/user/'+row.id+'/delete" id="hidden"><button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</button></a> '
                 }
             }
         ];
@@ -224,6 +223,14 @@
         };
         dataTable.settings()[0].ajax.data = param;
         dataTable.ajax.reload();
+    }
+
+    $('#message').delay(3000).hide(300);
+
+    function sexport() {
+        var val = $(".paginate_button.active:first").text();
+        val = val > 0 ? val - 1 : val;
+        window.location = '/user/export?start=' + val;
     }
 </script>
 </body>

@@ -24,7 +24,7 @@ var App = function () {
             dictFallbackMessage: '浏览器不支持',
             init: function () {
                 this.on('success', function (file, data) {
-                    $("#pic").val(data.fileName);
+                    $("#pic").val(data.url);
                 });
             }
         });

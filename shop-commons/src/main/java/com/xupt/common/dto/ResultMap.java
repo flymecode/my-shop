@@ -48,6 +48,7 @@ public class ResultMap extends HashMap<String,Object> implements Serializable {
     }
 
     public ResultMap message(String message) {
+        this.header = new HashMap<>();
         this.header.put("msg", message);
         this.put("header", header);
         return this;
