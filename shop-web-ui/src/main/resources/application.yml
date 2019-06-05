@@ -1,0 +1,27 @@
+# thymeleaf
+spring:
+  thymeleaf:
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+    servlet:
+      content-type: text/html
+  banner:
+    charset: UTF-8
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+server:
+  port: 8081
+# log
+logging:
+  level:
+    com.xupt: trace
+  path: /log
+
+
+
+

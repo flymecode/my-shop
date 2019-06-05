@@ -7,4 +7,5 @@ package com.xupt.common.constant;
  */
 public class Consts {
     public static final String SESSION_USER = "user";
+    public static final String REG_EMAIL_FORMAT = "";
 }
