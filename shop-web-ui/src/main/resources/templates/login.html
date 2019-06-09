@@ -44,25 +44,29 @@
 					</div>
 				</div> 
 			</div>
-			<div class="kengl_kuang">
-				<div class="txt_kuang">
-					<input id="username" name="username" type="text" class="itxt"  placeholder="邮箱/用户名/已验证手机">
-					<input id="password" name="password" type="password" class="itxt"  placeholder="密码">
-				</div>
-				<div class="remember">
-					<div class="fl">
-						<input type="checkbox" >
-						<label for="autoLoginFlag">自动登录</label>
+			<form action="/user/login" method="post">
+				<div class="kengl_kuang">
+					<div class="txt_kuang">
+						<input id="username" name="username" type="text" class="itxt"  placeholder="邮箱/用户名/已验证手机">
+						<input id="password" name="password" type="password" class="itxt"  placeholder="密码">
+						<input id="verifyCodeActual" name="verifyCodeActual" type="password" class="itxt"  style="width: 125px" placeholder="验证码">
+						<img id="captcha_img"  alt="点击更换" title="点击更换" onclick="refresh()"  src="/kaptcha" style="float: right;padding-right: 23px">
 					</div>
-					<div class="fr">
-						<a href="#" class="fl" target="_blank" title="忘记密码">忘记密码?</a> 
+					<div class="remember">
+						<div class="fl">
+							<input type="checkbox" >
+							<label for="autoLoginFlag">自动登录</label>
+						</div>
+						<div class="fr">
+							<a href="#" class="fl" target="_blank" title="忘记密码">忘记密码?</a>
+						</div>
 					</div>
+					<input type="submit" tabindex="5" value="登 录" class="btnnuw">
 				</div>
-				<input type="submit" tabindex="5" value="登 录" class="btnnuw">
-			</div>
+			</form>
 			<div class="corp_login">
 				<div class="mingb_shoq"><a href="#">名榜授权登录！</a></div>
-				<div class="regist_link"><a href="zhuc.html" target="_blank"><b></b>立即注册</a></div>
+				<div class="regist_link"><a href="/to_register"><b></b>立即注册</a></div>
 			</div>
 		</div> 
 	</div>
@@ -75,6 +79,10 @@
 		<p class="gonga_bei">京公网安备：123456789号</p>
 	</div>
 </div>
-
+<script type="text/javascript">
+	function refresh() {
+		document.getElementById('captcha_img').src="/kaptcha?"+Math.random();
+	}
+</script>
 </body>
 </html>

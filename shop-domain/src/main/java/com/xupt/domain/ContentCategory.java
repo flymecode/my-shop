@@ -15,4 +15,6 @@ public class ContentCategory extends BaseEntity{
     private Integer sortOrder;
     private String name;
     private Boolean isParent;
+
+    private ContentCategory contentCategory;
 }

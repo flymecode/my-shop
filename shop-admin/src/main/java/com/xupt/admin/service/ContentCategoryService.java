@@ -1,5 +1,6 @@
 package com.xupt.admin.service;
 
+import com.xupt.common.dto.ResultMap;
 import com.xupt.domain.ContentCategory;
 
 import java.util.List;
@@ -11,5 +12,11 @@ import java.util.List;
 public interface ContentCategoryService {
     List<ContentCategory> findAll();
 
-    List<ContentCategory> findTreData(Long pid);
+    List<ContentCategory> findTreeData(Long pid);
+
+    ContentCategory getCategoryById(Long id);
+
+    ResultMap save(ContentCategory category);
+
+    ResultMap delete(Long id);
 }

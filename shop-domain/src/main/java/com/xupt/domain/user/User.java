@@ -1,5 +1,7 @@
-package com.xupt.domain;
+package com.xupt.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.xupt.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,11 +11,12 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     private String username;
     private String email;
     private String phone;
+    @JsonIgnore
     private String password;
 
 }

@@ -1,6 +1,6 @@
 package com.xupt.api.service;
 
-import com.xupt.domain.User;
+import com.xupt.domain.user.User;
 
 /**
  * @author maxu

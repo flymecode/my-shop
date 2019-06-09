@@ -1,6 +1,6 @@
 package com.xupt.api.controller;
 
-import com.xupt.api.constant.Commons;
+import com.xupt.api.constant.Constants;
 import com.xupt.api.service.ContentService;
 import com.xupt.common.dto.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019/6/5
  */
 @RestController
-@RequestMapping(Commons.VERSION + "/content")
+@RequestMapping(Constants.VERSION + "/content")
 public class ContentController {
     @Autowired
     private ContentService contentService;

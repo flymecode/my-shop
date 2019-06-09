@@ -41,7 +41,7 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 # server
 server:
-  port: 8080
+  port: 8086
 # log
 logging:
   level:

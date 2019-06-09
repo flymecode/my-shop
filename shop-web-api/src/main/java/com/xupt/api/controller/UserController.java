@@ -1,10 +1,11 @@
 package com.xupt.api.controller;
 
-import com.xupt.api.constant.Commons;
+import com.xupt.api.constant.Constants;
 import com.xupt.api.service.UserService;
-import com.xupt.common.dto.ResultMap;
-import com.xupt.domain.User;
+import com.xupt.domain.user.User;
+import com.xupt.domain.user.UserDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,22 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping(Commons.VERSION +"/user")
+@RequestMapping(Constants.VERSION +"/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public User register(User user) {
+    public void register(User user) {
         log.info("-------------------->>>>进入");
-        User register = userService.register(user);
-        return register;
+        userService.register(user);
     }
 
     @PostMapping("/login")
-    public ResultMap login(User user) {
-        userService.login(user);
-        return null;
+    public UserDTO login(User user) {
+        User login = userService.login(user);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(login, userDTO);
+        return userDTO;
     }
+
 }

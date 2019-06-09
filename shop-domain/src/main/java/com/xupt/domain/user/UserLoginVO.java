@@ -1,4 +1,4 @@
-package com.xupt.ui.vo;
+package com.xupt.domain.user;
 
 import lombok.Data;
 
@@ -9,9 +9,7 @@ import java.io.Serializable;
  * @date 2019/6/5
  */
 @Data
-public class UserRegisterVO implements Serializable {
+public class UserLoginVO implements Serializable {
     private String username;
-    private String email;
-    private String phone;
     private String password;
 }

@@ -81,6 +81,7 @@
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

@@ -58,6 +58,7 @@ public class IQiniuServiceImpl implements IQiniuService {
                 log.info("文件上传失败");
             }
         }
+        log.info(imgUrl.toString());
         resultMap.put("url", imgUrl.toString());
         return resultMap;
     }

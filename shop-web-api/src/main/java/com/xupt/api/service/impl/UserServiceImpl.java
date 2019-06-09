@@ -4,7 +4,7 @@ import com.xupt.api.exception.ServerException;
 import com.xupt.api.mapper.UserMapper;
 import com.xupt.api.service.UserService;
 import com.xupt.api.utils.MailUtils;
-import com.xupt.domain.User;
+import com.xupt.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private MailUtils mailUtils;
 
+    @Override
     public User login(User userLogin) {
         User user = userMapper.selectByUsername(userLogin.getUsername());
         if (null == user) {
@@ -35,10 +36,7 @@ public class UserServiceImpl implements UserService {
         //校验密码
         if (null != user) {
             boolean checkpw = false;
-            try {
-                checkpw = BCrypt.checkpw(userLogin.getPassword(), user.getPassword());
-            } catch (Exception e1) {
-            }
+            checkpw = BCrypt.checkpw(userLogin.getPassword(), user.getPassword());
             if (!checkpw) {
                 log.info("password is wrong: {}", userLogin.getUsername());
                 throw new ServerException("password is wrong");
@@ -87,11 +85,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public boolean isExistEmail(String email) {
         return userMapper.getUserByEmail(email) > 0;
 
     }
 
+    @Override
     public  boolean isExistUserName(String username) {
         return userMapper.getUserByName(username) > 0;
     }

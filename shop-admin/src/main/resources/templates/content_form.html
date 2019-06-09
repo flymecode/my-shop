@@ -150,7 +150,7 @@
 <script src="../asserts/plugins/wangEditor/release/wangEditor.min.js"></script>
 <script>
     $(function () {
-        App.getTree('/content/data',['id'],function (nodes) {
+        App.getTree('/category/data',['id'],function (nodes) {
             var node = nodes[0];
             $('#category').attr('value',node.name);
             $('#node').attr('value', node.id);

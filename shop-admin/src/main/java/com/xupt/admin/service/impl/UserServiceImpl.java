@@ -7,7 +7,7 @@ import com.xupt.admin.mapper.UserMapper;
 import com.xupt.admin.service.UserService;
 import com.xupt.admin.validator.UserForm;
 import com.xupt.common.dto.ResultMap;
-import com.xupt.domain.User;
+import com.xupt.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;

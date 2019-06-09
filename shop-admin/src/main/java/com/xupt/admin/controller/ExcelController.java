@@ -2,7 +2,7 @@ package com.xupt.admin.controller;
 
 import com.xupt.admin.service.UserService;
 import com.xupt.admin.validator.UserForm;
-import com.xupt.domain.User;
+import com.xupt.domain.user.User;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

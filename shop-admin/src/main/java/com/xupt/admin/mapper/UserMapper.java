@@ -2,7 +2,7 @@ package com.xupt.admin.mapper;
 
 import com.xupt.admin.mapper.provider.UserProvicer;
 import com.xupt.admin.validator.UserForm;
-import com.xupt.domain.User;
+import com.xupt.domain.user.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

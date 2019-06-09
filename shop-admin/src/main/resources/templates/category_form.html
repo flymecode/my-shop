@@ -3,6 +3,9 @@
 <head>
     <title>商城</title>
     <meta th:replace="commons/header">
+    <link rel="stylesheet" href="../asserts/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css">
+    <link rel="stylesheet" href="../asserts/plugins/dropzone/min/dropzone.min.css">
+    <link rel="stylesheet" href="../asserts/plugins/dropzone/min/basic.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -16,6 +19,7 @@
         <section class="content-header">
             <h1>
                 内容管理
+                <small></small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
@@ -25,47 +29,52 @@
         <section class="content">
             <div class="row">
                 <div class="col-xs-12">
-                    <div th:if="${baseResult != null}">
-                        <div th:class="${baseResult.code == 200 ? 'alert alert-success alert-dismissible':'alert alert-danger alert-dismissible'}">
+                    <div th:if="${contentResult != null}" id="msg">
+                        <div th:class="${contentResult.code == 200 ? 'alert alert-success alert-dismissible':'alert alert-danger alert-dismissible'}">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                            <div th:text="${baseResult.msg}"></div>
+                            <div th:text="${contenResult.msg}">
+
+                            </div>
                         </div>
                     </div>
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title" >新增菜单</h3>
+                            <h3 class="box-title" th:text="${content==null?'新增分类':'编辑分类'}"></h3>
                         </div>
-                        <form class="form-horizontal" id="inputForm" method="post" action="/user/save">
+
+                        <form class="form-horizontal" id="inputForm" method="post" action="/category/save">
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">父级菜单</label>
+                                    <label for="category" class="col-sm-2 control-label">父级类目</label>
                                     <div class="col-sm-10">
-                                        <input name="email" type="email" class="form-control email required" id="inputEmail3" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password" class="col-sm-2 control-label">密码</label>
-                                    <div class="col-sm-10">
-                                        <input name="password" type="password"  class="form-control required" id="password" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="username" class="col-sm-2 control-label">姓名</label>
-                                    <div class="col-sm-10">
-                                        <input name="username" type="text"  class="form-control required" id="username" placeholder="Username">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone"  class="col-sm-2 control-label">手机</label>
-                                    <div class="col-sm-10">
-                                        <input name="phone" type="text"  class="form-control required" id="phone" placeholder="Phone">
+                                        <input type="hidden" id="node" th:value="${c==null?'':c.id}" name="parentId">
+                                        <input  id="category" data-toggle="modal"   th:value="${c == null?'':c.contentCategory.name}" data-target="#modal-default" type="text"  class="form-control" placeholder="请选择" readonly="true">
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="sub_category" class="col-sm-2 control-label">当前菜单</label>
+                                <div class="col-sm-10">
+                                    <input readonly="true" type="text" th:value="${c==null?'':c.name}"  class="form-control required" id="sub_category" placeholder="CategoryName">
+                                </div>
+                            </div>
+                            <div class="form-group" th:if="${c == null}">
+                                <label for="sub_category" class="col-sm-2 control-label">下级菜单</label>
+                                <div class="col-sm-10">
+                                    <input name="name" type="text" class="form-control required" id="sub_category" placeholder="CategoryName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="username"  class="col-sm-2 control-label">排序</label>
+                                <div class="col-sm-10">
+                                    <input name="sortOrder" th:value="${c==null?'':c.sortOrder}" type="text"  class="form-control required" id="username" placeholder="Order">
+                                </div>
+                            </div>
+
                             <div class="box-footer">
                                 <button type="button" class="btn btn-default" onclick="history.go(-1)">返回</button>
-                                <button type="submit" class="btn btn-info pull-right">确定</button>
+                                <button type="submit" class="btn btn-info pull-right" id="btnSubmit">提交</button>
                             </div>
                         </form>
                     </div>
@@ -76,5 +85,43 @@
     <div th:replace="commons/copyright"></div>
 </div>
 <div th:replace="commons/footer"></div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">
+                    <ul id="myTree" class="ztree"></ul>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="closeOk" type="button" class="btn btn-default">关闭</button>
+                <button id="btnOk" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../asserts/plugins/jquery-ztree/js/jquery.ztree.core-3.5.min.js"></script>
+<script src="../asserts/plugins/dropzone/min/dropzone.min.js"></script>
+<script src="../asserts/plugins/wangEditor/release/wangEditor.min.js"></script>
+<script>
+    $(function () {
+        App.getTree('/category/data',['id'],function (nodes) {
+            var node = nodes[0];
+            $('#category').attr('value',node.name);
+            $('#node').attr('value', node.id);
+            $('#modal-default').modal('hide');
+        })
+    })
+
+    $('#btnSubmit').on('click', function () {
+        var contentHtml = editor.txt.html();
+        $('#content').val((contentHtml));
+    });
+</script>
 </body>
 </html>
