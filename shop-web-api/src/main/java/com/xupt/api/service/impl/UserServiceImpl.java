@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(User userLogin) {
-        User user = userMapper.selectByUsername(userLogin.getUsername());
+        User user = userMapper.selectByUsername(userLogin);
         if (null == user) {
             log.info("user not found: {}", userLogin.getUsername());
             throw new ServerException("user is not found");
