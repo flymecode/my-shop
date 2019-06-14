@@ -9,6 +9,7 @@
         <module>shop-web-ui</module>
         <module>shop-web-api</module>
         <module>shop-domain</module>
+        <module>shop-web-order</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -72,6 +73,11 @@
                 <groupId>org.mindrot</groupId>
                 <artifactId>jbcrypt</artifactId>
                 <version>0.3m</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>2.1.5.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

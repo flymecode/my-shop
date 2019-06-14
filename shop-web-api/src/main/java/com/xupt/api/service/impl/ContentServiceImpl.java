@@ -3,7 +3,7 @@ package com.xupt.api.service.impl;
 import com.xupt.api.mapper.ContentMapper;
 import com.xupt.api.service.ContentService;
 import com.xupt.common.dto.ResultMap;
-import com.xupt.domain.Content;
+import com.xupt.domain.content.Content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

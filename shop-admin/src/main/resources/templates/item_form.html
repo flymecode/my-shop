@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>商城</title>
+    <meta th:replace="commons/header">
+    <link rel="stylesheet" href="../asserts/plugins/jquery-ztree/css/zTreeStyle/zTreeStyle.min.css">
+    <link rel="stylesheet" href="../asserts/plugins/dropzone/min/dropzone.min.css">
+    <link rel="stylesheet" href="../asserts/plugins/dropzone/min/basic.min.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- header -->
+    <div th:replace="commons/nav"></div>
+    <!--  sidebar  -->
+    <div th:replace="commons/menu"></div>
+    <!--  content  -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                内容管理
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li class="active">控制面板</li>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div th:if="${contentResult != null}" id="msg">
+                        <div th:class="${contentResult.code == 200 ? 'alert alert-success alert-dismissible':'alert alert-danger alert-dismissible'}">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                            <div th:text="${contenResult.msg}">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" th:text="${content==null?'新增分类':'编辑分类'}"></h3>
+                        </div>
+
+                        <form class="form-horizontal" id="inputForm" method="post" action="/itemc/save">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="category" class="col-sm-2 control-label">父级类目</label>
+                                    <div class="col-sm-10">
+                                        <input type="hidden" id="node" name="cid">
+                                        <input  id="category" data-toggle="modal"   th:value="${content == null?'':content.data.itemCategory.name}" data-target="#modal-default" type="text"  class="form-control required" placeholder="请选择" readonly="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="title" class="col-sm-2 control-label">商品标题</label>
+                                    <div class="col-sm-10">
+                                        <input  id="title" name="title" th:value="${content == null?'':content.data.title}" type="text" class="form-control required" placeholder="商品标题" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="subTitle" class="col-sm-2 control-label">商品卖点</label>
+                                    <div class="col-sm-10">
+                                        <input  id="subTitle"  name="sellPoint" th:value="${content == null?'':content.data.sellPoint}" type="text"  class="form-control required" placeholder="商品卖点" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="titleDesc" class="col-sm-2 control-label">商品价格</label>
+                                    <div class="col-sm-10">
+                                        <input  id="titleDesc"  name="price"  th:value="${content == null?'':content.data.price}" type="text" class="form-control required" placeholder="商品价格" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="num" class="col-sm-2 control-label">库存数量</label>
+                                    <div class="col-sm-10">
+                                        <input  id="num" type="text" name="num" th:value="${content == null?'':content.data.num}" class="form-control required" placeholder="库存数量" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="pic" class="col-sm-2 control-label">商品图片</label>
+                                    <div class="col-sm-10">
+                                        <input  id="pic" name="image"  type="hidden"  class="form-control">
+                                        <div class="dropzone" id="dropz" style="margin-top: 5px;border: solid 2px #00C0EF "></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <button type="button" class="btn btn-default" onclick="history.go(-1)">返回</button>
+                                <button type="submit" class="btn btn-info pull-right" id="btnSubmit">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:replace="commons/copyright"></div>
+</div>
+<div th:replace="commons/footer"></div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">
+                    <ul id="myTree" class="ztree"></ul>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="closeOk" type="button" class="btn btn-default">关闭</button>
+                <button id="btnOk" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../asserts/plugins/jquery-ztree/js/jquery.ztree.core-3.5.min.js"></script>
+<script src="../asserts/plugins/dropzone/min/dropzone.min.js"></script>
+<script src="../asserts/plugins/wangEditor/release/wangEditor.min.js"></script>
+<script>
+    $(function () {
+        App.getTree('/item/data',['id'],function (nodes) {
+            var node = nodes[0];
+            $('#category').attr('value',node.name);
+            $('#node').attr('value', node.id);
+            $('#modal-default').modal('hide');
+        })
+    })
+    App.dropz('#dropz', '/upload');
+    $('#btnSubmit').on('click', function () {
+        var contentHtml = editor.txt.html();
+        $('#content').val((contentHtml));
+    });
+    // 配置服务器地址
+</script>
+</body>
+</html>

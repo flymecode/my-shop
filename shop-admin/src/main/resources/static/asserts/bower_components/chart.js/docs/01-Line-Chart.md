@@ -153,7 +153,7 @@ Calling `addData(valuesArray, label)` on your Chart instance passing an array of
 ```javascript
 // The values array passed into addData should be one for each dataset in the chart
 myLineChart.addData([40, 60], "August");
-// This new data will now animate at the end of the chart.
+good
 ```
 
 #### .removeData( )

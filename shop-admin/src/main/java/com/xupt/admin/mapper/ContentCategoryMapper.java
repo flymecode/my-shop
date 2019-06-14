@@ -1,6 +1,6 @@
 package com.xupt.admin.mapper;
 
-import com.xupt.domain.ContentCategory;
+import com.xupt.domain.content.ContentCategory;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

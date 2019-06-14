@@ -1,5 +1,6 @@
-package com.xupt.domain;
+package com.xupt.domain.content;
 
+import com.xupt.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

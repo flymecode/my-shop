@@ -2588,7 +2588,7 @@ var wysihtml5 = {
                         containing the TextRange's 'text' property with each \r\n converted to a single \r character cannot
                         be longer than the text of the TextRange, so the start of the range is moved that length initially
                         and then a character at a time to make up for any trailing line breaks not contained in the 'text'
-                        property. This has good performance in most situations compared to the previous two methods.
+                        property. This has data performance in most situations compared to the previous two methods.
                         */
                         var tempRange = workingRange.duplicate();
                         var rangeLength = tempRange.text.replace(/\r\n/g, "\r").length;
@@ -8306,7 +8306,7 @@ wysihtml5.dom.query = function(elements, query) {
 **/
 
 /* Modern event.clipboardData driven approach.
- * Advantage is that it does not have to loose selection or modify dom to catch the data. 
+ * Advantage is that it does not have to loose selection or modify dom to catch the data.
  * IE does not support though.
 **/
 wysihtml5.dom.getPastedHtml = function(event) {

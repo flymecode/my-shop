@@ -1,6 +1,7 @@
 package com.xupt.admin.utils;
 
-import com.xupt.domain.ContentCategory;
+import com.xupt.domain.content.ContentCategory;
+import com.xupt.domain.item.ItemCategory;
 
 import java.util.List;
 
@@ -20,6 +21,23 @@ public class SortList {
                     for (ContentCategory source : sources) {
                         if (source.getParentId().equals(contentCategory.getId())) {
                             sort(sources, target, contentCategory.getId());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void  sortItem(List<ItemCategory> sources, List<ItemCategory> target, Long parentId) {
+        for (ItemCategory item : sources) {
+            if(item.getParentId().equals(parentId)){
+                target.add(item);
+                // 判断有没有子节点，如果有，则继续追加
+                if (item.getIsParent()) {
+                    for (ItemCategory source : sources) {
+                        if (source.getParentId().equals(item.getId())) {
+                            sortItem(sources, target, item.getId());
                             break;
                         }
                     }

@@ -80,7 +80,7 @@ These are the customisation options specific to Bar charts. These options are me
 	//Number - Spacing between each of the X value sets
 	barValueSpacing : 5,
 
-	//Number - Spacing between data sets within X values
+	good
 	barDatasetSpacing : 1,
 	{% raw %}
 	//String - A legend template
@@ -136,7 +136,7 @@ Calling `addData(valuesArray, label)` on your Chart instance passing an array of
 ```javascript
 // The values array passed into addData should be one for each dataset in the chart
 myBarChart.addData([40, 60], "August");
-// The new data will now animate at the end of the chart.
+good
 ```
 
 #### .removeData( )

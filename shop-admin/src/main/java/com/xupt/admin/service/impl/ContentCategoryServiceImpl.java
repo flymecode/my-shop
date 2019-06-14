@@ -3,12 +3,14 @@ package com.xupt.admin.service.impl;
 import com.xupt.admin.mapper.ContentCategoryMapper;
 import com.xupt.admin.service.ContentCategoryService;
 import com.xupt.common.dto.ResultMap;
-import com.xupt.domain.ContentCategory;
+import com.xupt.domain.content.ContentCategory;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author maxu
@@ -19,9 +21,16 @@ public class ContentCategoryServiceImpl implements ContentCategoryService {
     @Resource
     private ContentCategoryMapper contentCategoryMapper;
 
+    @Resource
+    private ValueOperations<String, List<ContentCategory>> valueOperations;
     @Override
     public List<ContentCategory> findAll() {
-        return contentCategoryMapper.findAll();
+        List<ContentCategory> content = valueOperations.get("content");
+        if (content == null) {
+            content = contentCategoryMapper.findAll();
+            valueOperations.set("content",content,40, TimeUnit.MINUTES);
+        }
+        return content;
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.xupt.domain;
+package com.xupt.domain.content;
 
+import com.xupt.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ContentCategory extends BaseEntity{
+public class ContentCategory extends BaseEntity {
     private Long parentId;
     private Integer status;
     private Integer sortOrder;

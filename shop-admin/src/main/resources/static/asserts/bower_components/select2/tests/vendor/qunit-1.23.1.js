@@ -2917,7 +2917,7 @@ QUnit.done( function( details ) {
 
 	if ( config.altertitle && document.title ) {
 
-		// Show ✖ for good, ✔ for bad suite result in title
+		// Show ✖ for data, ✔ for bad suite result in title
 		// use escape sequences in case file gets loaded with non-utf-8-charset
 		document.title = [
 			( details.failed ? "\u2716" : "\u2714" ),

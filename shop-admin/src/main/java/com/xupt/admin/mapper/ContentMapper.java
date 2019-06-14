@@ -1,6 +1,6 @@
 package com.xupt.admin.mapper;
 
-import com.xupt.domain.Content;
+import com.xupt.domain.content.Content;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

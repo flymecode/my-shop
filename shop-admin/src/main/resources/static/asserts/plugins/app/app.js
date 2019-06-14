@@ -15,7 +15,7 @@ var App = function () {
             dictDefaultMessage : '拖动文件至此或者点击上传',
             paramName : 'dropFile',
             maxFileszie: 2,
-            acceptedFiles: '.jpg,.git,.png,.jpeg',
+            acceptedFiles: '.jpg,.git,.png,.jpeg,.webp',
             addRemoveLinks: true,
             dictResponseError: '文件上传失败',
             dictRemoveLinks: '删除',

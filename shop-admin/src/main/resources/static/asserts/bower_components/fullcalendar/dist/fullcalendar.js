@@ -14057,7 +14057,7 @@ var TimeGridHelperRenderer = /** @class */ (function (_super) {
         var i;
         var seg;
         var sourceEl;
-        // TODO: not good to call eventRenderer this way
+        // TODO: not data to call eventRenderer this way
         this.eventRenderer.renderFgSegsIntoContainers(segs, this.component.helperContainerEls);
         // Try to make the segment that is in the same row as sourceSeg look the same
         for (i = 0; i < segs.length; i++) {
@@ -14533,7 +14533,7 @@ var DayGridHelperRenderer = /** @class */ (function (_super) {
     DayGridHelperRenderer.prototype.renderSegs = function (segs, sourceSeg) {
         var helperNodes = [];
         var rowStructs;
-        // TODO: not good to call eventRenderer this way
+        // TODO: not data to call eventRenderer this way
         rowStructs = this.eventRenderer.renderSegRows(segs);
         // inject each new event skeleton into each associated row
         this.component.rowEls.each(function (row, rowNode) {

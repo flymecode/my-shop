@@ -152,7 +152,7 @@ myPolarAreaChart.update();
 Calling `addData(segmentData, index)` on your Chart instance passing an object in the same format as in the constructor. There is an option second argument of 'index', this determines at what index the new segment should be inserted into the chart.
 
 ```javascript
-// An object in the same format as the original data source
+good
 myPolarAreaChart.addData({
 	value: 130,
 	color: "#B48EAD",

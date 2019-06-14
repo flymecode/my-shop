@@ -3,7 +3,7 @@ package com.xupt.admin.controller;
 import com.xupt.admin.service.ContentCategoryService;
 import com.xupt.admin.utils.SortList;
 import com.xupt.common.dto.ResultMap;
-import com.xupt.domain.ContentCategory;
+import com.xupt.domain.content.ContentCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
 package com.xupt.api.mapper;
 
-import com.xupt.domain.Content;
+import com.xupt.domain.content.Content;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

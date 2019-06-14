@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>我的商城 | 内容管理</title>
+    <meta th:replace="commons/header">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- header -->
+    <div th:replace="commons/nav"></div>
+    <!--  sidebar  -->
+    <div th:replace="commons/menu"></div>
+    <!--  content  -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                订单管理
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+                <li class="active">内容管理</li>
+            </ol>
+        </section>
+        <!--  main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div th:if="${baseResult != null}" id="message">
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                            <div th:text="${baseResult.header.msg}"></div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">内容列表</h3>
+                            <div class="box-body">
+                                <a href="/content/form">
+                                    <button type="button" class="btn btn-sm btn-default"><i class="fa fa-plus"></i>新增</button>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-default" onclick="deleteMulti()"><i class="fa fa-trash"></i>删除</button>
+                                <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i>导入</button>
+                                <button type="button" class="btn btn-sm btn-default"><i class="fa fa-upload"></i>导出</button>
+                            </div>
+                            <div id="seacher" class="row" style="padding: 15px">
+                                <form class="form-horizontal" >
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="title" class="col-sm-2 control-label">标题</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control required" id="title" placeholder="Title">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="subTitle" class="col-sm-2 control-label">子标题</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control required" id="subTitle" placeholder="subTitle">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="titleDes" class="col-sm-2 control-label">描述</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control required" id="titleDes" placeholder="titleDes">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="padding-right: 15px">
+                                        <div class="col-xs-12">
+                                            <button type="button" class="btn btn-info pull-right" onclick="search()"><i class="fa fa-search"></i>搜索</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="box-body table-responsive">
+                            <table id="user_list" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="minimal icheck_master"/></th>
+                                        <th>订单号</th>
+                                        <th>用户ID</th>
+                                        <th>支付金额</th>
+                                        <th>支付状态</th>
+                                        <th>支付时间</th>
+                                        <th>取消时间</th>
+                                        <th>关闭时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:replace="commons/copyright"></div>
+</div>
+<div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">温馨提示</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button id="closeOk" type="button" class="btn btn-default">关闭</button>
+                <button id="deleteOk" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="user_detail"></div>
+<div th:replace="commons/footer"></div>
+<script>
+    // ---------分页-------------
+    var dataTable = null;
+    $(function () {
+        var columns = [
+            {
+                'data': function (row, type, val, meta) {
+                    return '<input type="checkbox" class="minimal" id="' + row.id + '"/>'
+                }
+            },
+            {'data': 'id'},
+            {'data': 'userId'},
+            {'data': 'payment'},
+            {'data': function (data) {
+                    if (data.status == 1) {
+                        return '正常'
+                    } else if (data.status == 2) {
+                        return '下架'
+                    } else if (data.status == 3) {
+                        return '删除'
+                    } else {
+                        return ''
+                    }
+                }},
+            {'data': function (data) {
+                    if (data.endTime == null) {
+                        return '---';
+                    }
+                    return data.endTime;
+                }},
+            {'data': function (data) {
+                    if (data.closeTime == null) {
+                        return '---';
+                    }
+                    return data.closeTime;
+                }},
+            {
+                'data': function (data) {
+                    var date = new Date(data.updated);
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    var currentDate = date.getFullYear() + "-" + month + "-" + strDate
+                        + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+                    return currentDate;
+                }
+            },
+            {
+                'data': function (row, type, val, meta) {
+                    var url = "/user/" + row.id + "/detail"
+                    return '<button type="button" onclick="App.getDetail(\'' + url + '\')" class="btn btn-sm btn-default"><i class="fa fa-search"></i>查看</button>' +
+                        ' <a href="/content/' + row.id + '/edit"><button type="button" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>编辑</button></a>' +
+                        ' <a href="/content/' + row.id + '/delete"><button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</button></a> '
+
+                }
+            }
+        ];
+        dataTable = App.setTable("/order/page", columns);
+
+    });
+    function search() {
+        var title = $("#title").val();
+        var subTitle = $("#subTitle").val();
+        var titleDes = $("#titleDes").val();
+        // 搜索的参数
+        var param = {
+            'title': title,
+            'subTitle' :subTitle,
+            'titleDes' : titleDes
+        };
+        dataTable.settings()[0].ajax.data = param;
+        dataTable.ajax.reload();
+    }
+    // ------- 选择按钮------------
+    var idArray = [];
+    $(function () {
+        $('#closeOk').bind('click',function () {
+            $("#modal-delete").modal('hide');
+        })
+    })
+    // 删除操作
+    $(function () {
+        $('#deleteOk').bind('click',function () {
+            if (idArray.length !== 0) {
+                $.ajax({
+                    "url": "/item/delete",
+                    "data": {'ids': idArray.toString()},
+                    "type": 'POST',
+                    "dataType": 'JSON',
+                    "success": function (data) {
+                        if (data.status === 200) {
+                            window.location.reload();
+                        } else {
+                            $('#deleteOk').unbind('click');
+                            $('#deleteOk').bind('click',function () {
+                                $("#modal-delete").modal('hide');
+                            })
+                            var time = function () {
+                                $('#modal-message').html(data.message);
+                                $("#modal-delete").modal('show');
+                            }
+                            setTimeout(time, 500);
+                            time = null;
+                        }
+                    }
+                });
+            }
+            $("#modal-delete").modal('hide');
+        })
+    })
+    // 判断用户是否选择了数据项
+    function deleteMulti() {
+        var _checkBox = App.getCheckBox();
+        _checkBox.each(function () {
+            var _id = $(this).attr('id');
+            if (_id != null && _id !== 'undefine' && $(this).is(':checked')) {
+                idArray.push(_id);
+            }
+        });
+        if (idArray.length === 0) {
+            $('#modal-message').html('请选择至少一条数据！');
+            $("#modal-delete").modal('show');
+        } else {
+            $('#modal-message').html('你确定删除吗？');
+            $("#modal-delete").modal('show');
+        }
+    }
+
+    $('#message').delay(3000).hide(300);
+</script>
+</body>
+</html>

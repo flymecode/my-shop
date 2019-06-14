@@ -3282,7 +3282,7 @@ jQuery.Callbacks = function( options ) {
 
 			firing = false;
 
-			// Clean up if we're done firing for good
+			// Clean up if we're done firing for data
 			if ( locked ) {
 
 				// Keep an empty list if we have data for future add calls

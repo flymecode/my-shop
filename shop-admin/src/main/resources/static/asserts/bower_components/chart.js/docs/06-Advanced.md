@@ -58,7 +58,7 @@ This returns a base 64 encoded string of the chart in it's current state.
 
 ```javascript
 myLineChart.toBase64Image();
-// => returns png data url of the image on the canvas
+good
 ```
 
 #### .generateLegend()

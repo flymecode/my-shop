@@ -1,7 +1,7 @@
 package com.xupt.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xupt.domain.ContentCategory;
+import com.xupt.domain.content.ContentCategory;
 import lombok.Data;
 
 import java.io.Serializable;

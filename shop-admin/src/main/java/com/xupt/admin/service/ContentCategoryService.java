@@ -1,7 +1,7 @@
 package com.xupt.admin.service;
 
 import com.xupt.common.dto.ResultMap;
-import com.xupt.domain.ContentCategory;
+import com.xupt.domain.content.ContentCategory;
 
 import java.util.List;
 
